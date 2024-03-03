@@ -1,0 +1,4 @@
+DATABASE_URL=
+#Add the connection pooling URL from prisma accelerate here
+JWT_SECRET = ""
+#add your JWT SECRET KEY here
