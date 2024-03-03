@@ -10,7 +10,12 @@ const app = new Hono<{
   };
 }>().basePath("/api/v1");
 
-
+enum ResponseStatus {
+  Success = 200,
+  NotFound = 404,
+  AlreadyExsists = 403,
+  ServorError = 500,
+}
 
 app.post("/signup", async (c) => {
   const prisma = new PrismaClient({
@@ -18,17 +23,20 @@ app.post("/signup", async (c) => {
   }).$extends(withAccelerate());
 
   const body = await c.req.json();
+  try {
+    const user = await prisma.user.create({
+      data: {
+        email: body.email,
+        password: body.password,
+      },
+    });
+    const token = await sign({ id: user.id }, c.env.JWT_SECRET);
 
-  const user = await prisma.user.create({
-    data: {
-      email: body.email,
-      password: body.password,
-    },
-  });
-
-  const token = await sign({ id: user.id }, c.env.JWT_SECRET);
-
-  return c.json({ jwt: token });
+    return c.json({ jwt: token });
+  } catch (e) {
+    c.status(ResponseStatus.AlreadyExsists);
+    return c.json({ msg: "A user with this email already exsists" });
+  }
 });
 
 app.post("/signin", async (c) => {
@@ -48,7 +56,7 @@ app.post("/signin", async (c) => {
   });
 
   if (!user) {
-    c.status(403);
+    c.status(ResponseStatus.NotFound);
     return c.json({ error: "User not found" });
   }
 
