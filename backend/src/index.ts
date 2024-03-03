@@ -45,24 +45,30 @@ app.post("/signin", async (c) => {
   }).$extends(withAccelerate());
 
   const body = await c.req.json();
+  try {
+    const user = await prisma.user.findUnique({
+      where: {
+        email: body.email,
+        password: body.password,
+      },
+      select: {
+        id: true,
+      },
+    });
 
-  const user = await prisma.user.findUnique({
-    where: {
-      email: body.email,
-    },
-    select: {
-      id: true,
-    },
-  });
+    if (!user) {
+      c.status(ResponseStatus.NotFound);
+      return c.json({ error: "User not found" });
+    }
 
-  if (!user) {
-    c.status(ResponseStatus.NotFound);
-    return c.json({ error: "User not found" });
+    const token = await sign({ id: user.id }, c.env.JWT_SECRET);
+
+    return c.json({ jwt: token });
+  } catch (e) {
+    console.log(e);
+    c.status(ResponseStatus.ServorError);
+    return c.json({ msg: "Internal Servor Error" });
   }
-
-  const token = await sign({ id: user.id }, c.env.JWT_SECRET);
-
-  return c.json({ jwt: token });
 });
 
 app.post("/blog", (c) => {
