@@ -2,6 +2,7 @@ import { Hono } from "hono";
 import { PrismaClient } from "@prisma/client/edge";
 import { withAccelerate } from "@prisma/extension-accelerate";
 import { verify } from "hono/jwt";
+import authMiddleWare from "../middleware/auth";
 
 enum ResponseStatus {
   Success = 200,
@@ -21,23 +22,7 @@ export const blogRouter = new Hono<{
   };
 }>();
 
-blogRouter.use("/*", async (c, next) => {
-  const authHeader = c.req.header("Authorization");
-
-  if (!authHeader) {
-    c.status(ResponseStatus.UnAuthorized);
-    return c.json({ msg: "Access Denied" });
-  }
-  const token = authHeader.split(" ")[1];
-  try {
-    const payload = await verify(token, c.env.JWT_SECRET);
-    c.set("userId", payload.id);
-    await next();
-  } catch (e) {
-    c.status(ResponseStatus.UnAuthorized);
-    return c.json({ msg: "Access Denied" });
-  }
-});
+blogRouter.use("/*", authMiddleWare)
 
 blogRouter.post("/", async (c) => {
   const prisma = new PrismaClient({
