@@ -11,7 +11,6 @@ enum ResponseStatus {
 
 export default async function authMiddleWare(c: Context, next: Next) {
   const authHeader = c.req.header("Authorization");
-  console.log("hit");
 
   if (!authHeader) {
     c.status(ResponseStatus.Forbidden);

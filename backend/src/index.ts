@@ -10,6 +10,6 @@ const app = new Hono<{
 }>().basePath("/api/v1");
 
 app.route("/user", userRouter);
-app.route("/blog", postRouter);
+app.route("/post", postRouter);
 
 export default app;
