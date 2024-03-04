@@ -2,21 +2,22 @@ import { Hono } from "hono";
 import { PrismaClient } from "@prisma/client/edge";
 import { withAccelerate } from "@prisma/extension-accelerate";
 import { sign } from "hono/jwt";
+import { signinInput, signupInput } from "@rahmatdeep/blogging-app-common";
 
 enum ResponseStatus {
-    Success = 200,
-    NotFound = 404,
-    Forbidden = 403,
-    ServorError = 500,
-    InvalidCredentials = 401,
-  }
+  Success = 200,
+  NotFound = 404,
+  Forbidden = 403,
+  ServorError = 500,
+  InvalidCredentials = 401,
+}
 
 export const userRouter = new Hono<{
-    Bindings: {
-      DATABASE_URL: string;
-      JWT_SECRET: string;
-    };
-  }>();
+  Bindings: {
+    DATABASE_URL: string;
+    JWT_SECRET: string;
+  };
+}>();
 
 userRouter.post("/signup", async (c) => {
   const prisma = new PrismaClient({
@@ -24,6 +25,11 @@ userRouter.post("/signup", async (c) => {
   }).$extends(withAccelerate());
 
   const body = await c.req.json();
+  const { success } = signupInput.safeParse(body);
+  if (!success) {
+    c.status(ResponseStatus.InvalidCredentials);
+    return c.json({ msg: "Invalid Inputs" });
+  }
   try {
     const user = await prisma.user.create({
       data: {
@@ -47,6 +53,11 @@ userRouter.post("/signin", async (c) => {
   }).$extends(withAccelerate());
 
   const body = await c.req.json();
+  const { success } = signinInput.safeParse(body);
+  if (!success) {
+    c.status(ResponseStatus.InvalidCredentials);
+    return c.json({ msg: "Invalid Inputs" });
+  }
   try {
     const user = await prisma.user.findUnique({
       where: {

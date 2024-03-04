@@ -1,8 +1,11 @@
 import { Hono } from "hono";
 import { PrismaClient } from "@prisma/client/edge";
 import { withAccelerate } from "@prisma/extension-accelerate";
-import { verify } from "hono/jwt";
 import authMiddleWare from "../middleware/auth";
+import {
+  createPostInput,
+  updatePostInput,
+} from "@rahmatdeep/blogging-app-common";
 
 enum ResponseStatus {
   Success = 200,
@@ -12,7 +15,7 @@ enum ResponseStatus {
   InvalidCredentials = 401,
 }
 
-export const blogRouter = new Hono<{
+export const postRouter = new Hono<{
   Bindings: {
     DATABASE_URL: string;
     JWT_SECRET: string;
@@ -22,14 +25,19 @@ export const blogRouter = new Hono<{
   };
 }>();
 
-blogRouter.use("/*", authMiddleWare);
+postRouter.use("/*", authMiddleWare);
 
-blogRouter.post("/", async (c) => {
+postRouter.post("/", async (c) => {
   const prisma = new PrismaClient({
     datasourceUrl: c.env.DATABASE_URL,
   }).$extends(withAccelerate());
 
   const body = await c.req.json();
+  const { success } = createPostInput.safeParse(body);
+  if (!success) {
+    c.status(ResponseStatus.InvalidCredentials);
+    return c.json({ msg: "Invalid Inputs" });
+  }
   const authorId = c.get("userId");
   try {
     const post = await prisma.post.create({
@@ -50,12 +58,17 @@ blogRouter.post("/", async (c) => {
   }
 });
 
-blogRouter.put("/", async (c) => {
+postRouter.put("/", async (c) => {
   const prisma = new PrismaClient({
     datasourceUrl: c.env.DATABASE_URL,
   }).$extends(withAccelerate());
 
   const body = await c.req.json();
+  const { success } = updatePostInput.safeParse(body);
+  if (!success) {
+    c.status(ResponseStatus.InvalidCredentials);
+    return c.json({ msg: "Invalid Inputs" });
+  }
 
   try {
     const post = await prisma.post.update({
@@ -75,7 +88,7 @@ blogRouter.put("/", async (c) => {
   }
 });
 
-blogRouter.get("/bulk", async (c) => {
+postRouter.get("/bulk", async (c) => {
   const prisma = new PrismaClient({
     datasourceUrl: c.env.DATABASE_URL,
   }).$extends(withAccelerate());
@@ -91,7 +104,7 @@ blogRouter.get("/bulk", async (c) => {
   }
 });
 
-blogRouter.get("/:id", async (c) => {
+postRouter.get("/:id", async (c) => {
   const prisma = new PrismaClient({
     datasourceUrl: c.env.DATABASE_URL,
   }).$extends(withAccelerate());

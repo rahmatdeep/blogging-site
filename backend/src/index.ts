@@ -1,7 +1,6 @@
 import { Hono } from "hono";
 import { userRouter } from "./routes/user";
-import { blogRouter } from "./routes/blog";
-
+import { postRouter } from "./routes/post";
 
 const app = new Hono<{
   Bindings: {
@@ -11,6 +10,6 @@ const app = new Hono<{
 }>().basePath("/api/v1");
 
 app.route("/user", userRouter);
-app.route("/blog", blogRouter);
+app.route("/blog", postRouter);
 
 export default app;
