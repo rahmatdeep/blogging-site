@@ -4,9 +4,9 @@ import { verify } from "hono/jwt";
 enum ResponseStatus {
   Success = 200,
   NotFound = 404,
-  AlreadyExsists = 403,
+  Forbidden = 403,
   ServorError = 500,
-  UnAuthorized = 401,
+  InvalidCredentials = 401,
 }
 
 export default async function authMiddleWare(c: Context, next: Next) {
@@ -14,7 +14,7 @@ export default async function authMiddleWare(c: Context, next: Next) {
   console.log("hit");
 
   if (!authHeader) {
-    c.status(ResponseStatus.UnAuthorized);
+    c.status(ResponseStatus.Forbidden);
     return c.json({ msg: "Access Denied" });
   }
   const token = authHeader.split(" ")[1];
@@ -23,7 +23,7 @@ export default async function authMiddleWare(c: Context, next: Next) {
     c.set("userId", payload.id);
     await next();
   } catch (e) {
-    c.status(ResponseStatus.UnAuthorized);
+    c.status(ResponseStatus.Forbidden);
     return c.json({ msg: "Access Denied" });
   }
 }

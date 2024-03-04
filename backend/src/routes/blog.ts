@@ -7,9 +7,9 @@ import authMiddleWare from "../middleware/auth";
 enum ResponseStatus {
   Success = 200,
   NotFound = 404,
-  AlreadyExsists = 403,
+  Forbidden = 403,
   ServorError = 500,
-  UnAuthorized = 401,
+  InvalidCredentials = 401,
 }
 
 export const blogRouter = new Hono<{
@@ -22,7 +22,7 @@ export const blogRouter = new Hono<{
   };
 }>();
 
-blogRouter.use("/*", authMiddleWare)
+blogRouter.use("/*", authMiddleWare);
 
 blogRouter.post("/", async (c) => {
   const prisma = new PrismaClient({
@@ -46,7 +46,7 @@ blogRouter.post("/", async (c) => {
   } catch (e) {
     console.log(e);
     c.status(ResponseStatus.ServorError);
-    c.json({ msg: "Internal Servor Error" });
+    c.json({ msg: "Error while creating post" });
   }
 });
 
@@ -71,28 +71,7 @@ blogRouter.put("/", async (c) => {
   } catch (e) {
     console.log(e);
     c.status(ResponseStatus.ServorError);
-    return c.json({ msg: "Internal Servor Error" });
-  }
-});
-
-blogRouter.get("/", async (c) => {
-  const prisma = new PrismaClient({
-    datasourceUrl: c.env.DATABASE_URL,
-  }).$extends(withAccelerate());
-
-  const body = await c.req.json();
-
-  try {
-    const post = await prisma.post.findFirst({
-      where: {
-        id: body.id,
-      },
-    });
-    return c.json({ post });
-  } catch (e) {
-    console.log(e);
-    c.status(ResponseStatus.ServorError);
-    c.json({ msg: "Internal Servor Error" });
+    return c.json({ msg: "Error while updating post" });
   }
 });
 
@@ -108,6 +87,27 @@ blogRouter.get("/bulk", async (c) => {
   } catch (e) {
     console.log(e);
     c.status(ResponseStatus.ServorError);
-    return c.json({ msg: "Internal Servor Error" });
+    return c.json({ msg: "Error while fetching post" });
+  }
+});
+
+blogRouter.get("/:id", async (c) => {
+  const prisma = new PrismaClient({
+    datasourceUrl: c.env.DATABASE_URL,
+  }).$extends(withAccelerate());
+
+  const id = c.req.param("id");
+
+  try {
+    const post = await prisma.post.findFirst({
+      where: {
+        id: id,
+      },
+    });
+    return c.json({ post });
+  } catch (e) {
+    console.log(e);
+    c.status(ResponseStatus.ServorError);
+    c.json({ msg: "error while fetching posts" });
   }
 });

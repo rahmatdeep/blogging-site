@@ -4,11 +4,12 @@ import { withAccelerate } from "@prisma/extension-accelerate";
 import { sign } from "hono/jwt";
 
 enum ResponseStatus {
-  Success = 200,
-  NotFound = 404,
-  AlreadyExsists = 403,
-  ServorError = 500,
-}
+    Success = 200,
+    NotFound = 404,
+    Forbidden = 403,
+    ServorError = 500,
+    InvalidCredentials = 401,
+  }
 
 export const userRouter = new Hono<{
     Bindings: {
@@ -35,7 +36,7 @@ userRouter.post("/signup", async (c) => {
 
     return c.json({ jwt: token });
   } catch (e) {
-    c.status(ResponseStatus.AlreadyExsists);
+    c.status(ResponseStatus.InvalidCredentials);
     return c.json({ msg: "A user with this email already exsists" });
   }
 });
