@@ -128,6 +128,7 @@ postRouter.get("/:id", async (c) => {
         id: id,
       },
       select: {
+        id: true,
         title: true,
         content: true,
         author: {
