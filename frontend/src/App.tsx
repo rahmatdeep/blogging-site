@@ -5,6 +5,7 @@ import Post from "./pages/Post";
 import Posts from "./pages/Posts";
 
 import "./App.css";
+import Publish from "./pages/Publish";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <Route path="/signin" element={<Signin />} />
           <Route path="/post/:id" element={<Post />} />
           <Route path="/posts" element={<Posts />} />
+          <Route path="/publish" element={<Publish />} />
         </Routes>
       </BrowserRouter>
     </>
