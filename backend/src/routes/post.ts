@@ -99,6 +99,7 @@ postRouter.get("/bulk", async (c) => {
         content: true,
         title: true,
         id: true,
+        createdOn: true,
         author: {
           select: {
             name: true,
@@ -131,6 +132,7 @@ postRouter.get("/:id", async (c) => {
         id: true,
         title: true,
         content: true,
+        createdOn: true,
         author: {
           select: {
             name: true,
