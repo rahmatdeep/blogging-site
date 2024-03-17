@@ -21,8 +21,20 @@ export default function Auth({ type }: { type: "signup" | "signin" }) {
       const jwt = response.data.jwt;
       localStorage.setItem("token", `Bearer ${jwt}`);
       navigate("/posts");
-    } catch (e) {
-      console.log(e);
+    } catch (e: unknown) {
+      if (axios.isAxiosError(e)) {
+        console.log(e.message);
+        if (e.response) {
+          alert(e.response.data.msg);
+          setPostInputs({
+            name: "",
+            email: "",
+            password: "",
+          });
+        }
+      } else {
+        console.error("An unexpected error occurred", e);
+      }
     }
   }
   return (
@@ -53,6 +65,7 @@ export default function Auth({ type }: { type: "signup" | "signin" }) {
                 <LabeledInput
                   label="Name"
                   placeholder="Rahmatdeep Singh"
+                  value={postInputs.name || ""}
                   onChange={(e) => {
                     setPostInputs((c) => ({
                       ...c,
@@ -63,6 +76,7 @@ export default function Auth({ type }: { type: "signup" | "signin" }) {
               )}
               <LabeledInput
                 label="email"
+                value={postInputs.email}
                 placeholder="rahmatdeep@gmail.com"
                 onChange={(e) => {
                   setPostInputs((c) => ({ ...c, email: e.target.value }));
@@ -71,6 +85,7 @@ export default function Auth({ type }: { type: "signup" | "signin" }) {
               <LabeledInput
                 label="password"
                 placeholder="password"
+                value={postInputs.password}
                 onChange={(e) => {
                   setPostInputs((c) => ({ ...c, password: e.target.value }));
                 }}
@@ -92,6 +107,7 @@ export default function Auth({ type }: { type: "signup" | "signin" }) {
 }
 
 interface LabelledInputType {
+  value: string;
   label: string;
   placeholder: string;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
@@ -99,6 +115,7 @@ interface LabelledInputType {
 }
 
 function LabeledInput({
+  value,
   label,
   placeholder,
   onChange,
@@ -110,6 +127,7 @@ function LabeledInput({
         {label}
       </label>
       <input
+        value={value}
         onChange={onChange}
         type={inputType || "text"}
         className=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
