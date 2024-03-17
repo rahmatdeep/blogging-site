@@ -36,7 +36,7 @@ export default function Posts() {
                 authorName={post.author.name || "Anon"}
                 title={post.title}
                 content={post.content}
-                publishedDate="X"
+                publishedDate={post.createdOn}
               />
             ))}
           </div>

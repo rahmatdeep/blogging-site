@@ -15,6 +15,19 @@ export default function PostCard({
   content,
   publishedDate,
 }: PostCardProps) {
+  const timestamp = publishedDate;
+  const date = new Date(timestamp);
+  const options: Intl.DateTimeFormatOptions = {
+    day: "2-digit",
+    month: "long",
+    year: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+    second: "numeric",
+    timeZone: "Asia/Kolkata",
+  };
+  const formattedDate = new Intl.DateTimeFormat("en-IN", options).format(date);
+
   return (
     <>
       <Link to={`/post/${id}`}>
@@ -28,7 +41,7 @@ export default function PostCard({
             </div>
 
             <div className="flex justify-center flex-col pl-2 font-thin text-slate-500">
-              {publishedDate}
+              {formattedDate}
             </div>
           </div>
           <div className="text-xl font-semibold pt-2">{title}</div>

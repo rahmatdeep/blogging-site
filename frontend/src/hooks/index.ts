@@ -6,6 +6,7 @@ export interface Post {
   content: string;
   title: string;
   id: number;
+  createdOn: string;
   author: {
     name: string;
   };
