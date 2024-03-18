@@ -170,12 +170,15 @@ postRouter.delete("/:id", async (c) => {
   const id = c.req.param("id");
 
   const authorId = c.get("userId");
-
+  console.log(authorId);
   try {
-    const post = await prisma.post.delete({
+    const post = await prisma.post.update({
       where: {
         id: id,
         authorId: authorId,
+      },
+      data: {
+        published: false,
       },
     });
     return c.json({ msg: "post deleted" });
