@@ -105,6 +105,7 @@ userRouter.get("/", async (c) => {
       select: {
         name: true,
         id: true,
+        bio: true,
       },
     });
     return c.json(user);
