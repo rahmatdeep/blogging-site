@@ -3,6 +3,7 @@ import { PrismaClient } from "@prisma/client/edge";
 import { withAccelerate } from "@prisma/extension-accelerate";
 import { sign } from "hono/jwt";
 import { signinInput, signupInput } from "@rahmatdeep/blogging-app-common";
+import authMiddleWare from "../middleware/auth";
 
 enum ResponseStatus {
   Success = 200,
@@ -16,6 +17,9 @@ export const userRouter = new Hono<{
   Bindings: {
     DATABASE_URL: string;
     JWT_SECRET: string;
+  };
+  Variables: {
+    userId: string;
   };
 }>();
 
@@ -81,5 +85,35 @@ userRouter.post("/signin", async (c) => {
     console.log(e);
     c.status(ResponseStatus.ServorError);
     return c.json({ msg: "Internal Servor Error" });
+  }
+});
+
+userRouter.use("/*", authMiddleWare);
+
+userRouter.get("/", async (c) => {
+  const prisma = new PrismaClient({
+    datasourceUrl: c.env.DATABASE_URL,
+  }).$extends(withAccelerate());
+
+  const userId = c.get("userId");
+  console.log(userId);
+  try {
+    const user = await prisma.user.findUnique({
+      where: {
+        id: userId,
+      },
+      select: {
+        name: true,
+      },
+    });
+    if (user?.name === null) {
+      return c.json({ name: "Anonymous" });
+    } else {
+      return c.json({ name: user?.name });
+    }
+  } catch (e) {
+    console.log(e);
+    c.status(ResponseStatus.NotFound);
+    return c.json({ msg: "user not found" });
   }
 });
