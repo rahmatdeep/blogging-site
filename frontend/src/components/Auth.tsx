@@ -10,6 +10,7 @@ export default function Auth({ type }: { type: "signup" | "signin" }) {
   const {
     register,
     handleSubmit,
+    setError,
     formState: { isSubmitting, errors },
   } = useForm<SingupInput>({
     resolver: zodResolver(signupInput),
@@ -29,7 +30,10 @@ export default function Auth({ type }: { type: "signup" | "signin" }) {
       if (axios.isAxiosError(e)) {
         console.log(e.message);
         if (e.response) {
-          alert(e.response.data.msg);
+          setError("root", {
+            message: e.response.data.msg,
+          });
+          // alert(e.response.data.msg);
         }
       } else {
         console.error("An unexpected error occurred", e);
@@ -74,7 +78,7 @@ export default function Auth({ type }: { type: "signup" | "signin" }) {
                 />
               )}
               {type === "signup" && errors.name && (
-                <div className="text-red-500 w-full text-left">
+                <div className="text-red-500 w-full text-left pt-1">
                   {errors.name.message}
                 </div>
               )}
@@ -86,7 +90,7 @@ export default function Auth({ type }: { type: "signup" | "signin" }) {
                 disabled={isSubmitting}
               />
               {errors.email && (
-                <div className="text-red-500 w-full text-left">
+                <div className="text-red-500 w-full text-left pt-1">
                   {errors.email.message}
                 </div>
               )}
@@ -99,8 +103,13 @@ export default function Auth({ type }: { type: "signup" | "signin" }) {
                 disabled={isSubmitting}
               />
               {errors.password && (
-                <div className="text-red-500 w-full text-left">
+                <div className="text-red-500 w-full text-left pt-1">
                   {errors.password.message}
+                </div>
+              )}
+              {errors.root && (
+                <div className="text-red-500 w-full text-left pt-1">
+                  {errors.root.message}
                 </div>
               )}
               {isSubmitting ? (
