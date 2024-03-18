@@ -20,13 +20,14 @@ export default function FullPost({ post }: { post: Post }) {
       <div>
         <Appbar />
         <div className="flex justify-center">
-          <div className="grid grid-cols-12 px-10 w-full pt-200 max-w-screen-2xl pt-12">
-            <div className=" col-span-8">
+          <div className="lg:grid lg:grid-cols-12 lg:gap-0 px-10 w-full pt-200 max-w-screen-2xl pt-12 flex flex-col gap-5">
+            <div className=" lg:col-span-8">
               <div className="text-5xl font-extrabold">{post.title}</div>
               <div className="text-slate-500 pt-2">{formattedDate}</div>
               <div className="pt-4">{post.content}</div>
             </div>
-            <div className=" col-span-4">
+            <hr className="lg:hidden"></hr>
+            <div className=" lg:col-span-4">
               <div className="text-slate-600 text-lg">Author</div>
 
               <div className="flex pt-1">
