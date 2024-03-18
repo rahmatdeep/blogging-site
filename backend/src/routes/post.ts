@@ -54,37 +54,7 @@ postRouter.post("/", async (c) => {
   } catch (e) {
     console.log(e);
     c.status(ResponseStatus.ServorError);
-    c.json({ msg: "Error while creating post" });
-  }
-});
-
-postRouter.put("/", async (c) => {
-  const prisma = new PrismaClient({
-    datasourceUrl: c.env.DATABASE_URL,
-  }).$extends(withAccelerate());
-
-  const body = await c.req.json();
-  const { success } = updatePostInput.safeParse(body);
-  if (!success) {
-    c.status(ResponseStatus.InvalidCredentials);
-    return c.json({ msg: "Invalid Inputs" });
-  }
-
-  try {
-    const post = await prisma.post.update({
-      where: {
-        id: body.id,
-      },
-      data: {
-        title: body.title,
-        content: body.content,
-      },
-    });
-    return c.json({ id: post.id });
-  } catch (e) {
-    console.log(e);
-    c.status(ResponseStatus.ServorError);
-    return c.json({ msg: "Error while updating post" });
+    return c.json({ msg: "Error while creating post" });
   }
 });
 
@@ -151,6 +121,43 @@ postRouter.get("/:id", async (c) => {
   }
 });
 
+postRouter.put("/:id", async (c) => {
+  const prisma = new PrismaClient({
+    datasourceUrl: c.env.DATABASE_URL,
+  }).$extends(withAccelerate());
+
+  const body = await c.req.json();
+
+  const id = c.req.param("id");
+  const authorId = c.get("userId");
+  body.id = id;
+  console.log(body);
+  console.log(`author id ${authorId}`);
+  const { success } = updatePostInput.safeParse(body);
+  if (!success) {
+    c.status(ResponseStatus.InvalidCredentials);
+    return c.json({ msg: "Invalid Inputs" });
+  }
+
+  try {
+    const post = await prisma.post.update({
+      where: {
+        id: id,
+        authorId: authorId,
+      },
+      data: {
+        title: body.title,
+        content: body.content,
+      },
+    });
+    return c.json({ id: post.id });
+  } catch (e) {
+    console.log(e);
+    c.status(ResponseStatus.ServorError);
+    return c.json({ msg: "Error while updating post" });
+  }
+});
+
 postRouter.delete("/:id", async (c) => {
   const prisma = new PrismaClient({
     datasourceUrl: c.env.DATABASE_URL,
@@ -158,10 +165,13 @@ postRouter.delete("/:id", async (c) => {
 
   const id = c.req.param("id");
 
+  const authorId = c.get("userId");
+
   try {
     const post = await prisma.post.delete({
       where: {
         id: id,
+        authorId: authorId,
       },
     });
     return c.json({ msg: "post deleted" });
