@@ -9,7 +9,8 @@ export default function Post() {
   const { post, loading } = usePost({
     id: String(id),
   });
-  const { userId } = useUser();
+
+  const{userId} = useUser()
 
   if (loading) {
     return (
@@ -26,8 +27,7 @@ export default function Post() {
     return (
       <>
         <div>
-          {userId}
-          <FullPost post={post} />
+          <FullPost post={post} userId={userId}/>
         </div>
       </>
     );

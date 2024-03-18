@@ -9,6 +9,7 @@ export interface Post {
   createdOn: string;
   author: {
     name: string;
+    id: string;
   };
 }
 
