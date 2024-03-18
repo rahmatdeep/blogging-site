@@ -45,6 +45,7 @@ postRouter.post("/", async (c) => {
         title: body.title,
         content: body.content,
         authorId: authorId,
+        published: true,
       },
       select: {
         id: true,
