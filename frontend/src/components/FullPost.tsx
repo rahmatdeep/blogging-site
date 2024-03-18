@@ -40,9 +40,10 @@ export default function FullPost({
                       <button
                         type="button"
                         className="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 "
-                      onClick={()=>{
-                        navigate(`/edit/${post.id}`)
-                      }}>
+                        onClick={() => {
+                          navigate(`/edit/${post.id}`);
+                        }}
+                      >
                         Edit
                       </button>
                       <button
@@ -83,9 +84,7 @@ export default function FullPost({
                   <div className="text-2xl font-bold">
                     {post.author.name || "Anon"}
                   </div>
-                  <div className="pt-2 text-slate-500">
-                    Random catch phrase about the author
-                  </div>
+                  <div className="pt-2 text-slate-500">{post.author.bio}</div>
                 </div>
               </div>
             </div>

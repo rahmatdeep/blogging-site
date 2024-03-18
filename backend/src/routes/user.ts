@@ -115,3 +115,29 @@ userRouter.get("/", async (c) => {
     return c.json({ msg: "user not found" });
   }
 });
+
+userRouter.put("/", async (c) => {
+  const prisma = new PrismaClient({
+    datasourceUrl: c.env.DATABASE_URL,
+  }).$extends(withAccelerate());
+
+  const userId = c.get("userId");
+  const body = await c.req.json();
+  console.log(userId);
+  try {
+    const user = await prisma.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        name: body.name,
+        bio: body.bio,
+      },
+    });
+    return c.json(user);
+  } catch (e) {
+    console.log(e);
+    c.status(ResponseStatus.NotFound);
+    return c.json({ msg: "user not found" });
+  }
+});
