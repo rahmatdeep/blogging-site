@@ -12,6 +12,11 @@ export interface Post {
   };
 }
 
+interface User {
+  userName: string;
+  userId: string;
+}
+
 export function usePosts() {
   const [loading, setLoading] = useState(true);
   const [posts, setPosts] = useState<Post[]>([]);
@@ -56,4 +61,24 @@ export function usePost({ id }: { id: string }) {
     loading,
     post,
   };
+}
+
+export function useUser(): User {
+  const [userId, setUserId] = useState("");
+  const [userName, setUserName] = useState("");
+
+  useEffect(() => {
+    axios
+      .get(`${BACKEND_URl}/api/v1/user`, {
+        headers: {
+          Authorization: localStorage.getItem("token"),
+        },
+      })
+      .then((response) => {
+        setUserId(response.data.id);
+        setUserName(response.data.name);
+      });
+  }, []);
+
+  return { userId, userName };
 }

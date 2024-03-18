@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { usePost } from "../hooks";
+import { usePost, useUser } from "../hooks";
 import FullPost from "../components/FullPost";
 import Spinner from "../components/Spinner";
 import Appbar from "../components/AppBar";
@@ -9,6 +9,7 @@ export default function Post() {
   const { post, loading } = usePost({
     id: String(id),
   });
+  const { userId } = useUser();
 
   if (loading) {
     return (
@@ -25,6 +26,7 @@ export default function Post() {
     return (
       <>
         <div>
+          {userId}
           <FullPost post={post} />
         </div>
       </>

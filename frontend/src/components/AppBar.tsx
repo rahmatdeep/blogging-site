@@ -1,23 +1,10 @@
 import { Link } from "react-router-dom";
 import { Avatar } from "./PostCard";
-import { useEffect, useState } from "react";
-import axios from "axios";
-import { BACKEND_URl } from "../config";
+import { useUser } from "../hooks";
 
 export default function Appbar() {
-  const [username, setUsername] = useState("");
+  const { userName } = useUser();
 
-  useEffect(() => {
-    axios
-      .get(`${BACKEND_URl}/api/v1/user`, {
-        headers: {
-          Authorization: localStorage.getItem("token"),
-        },
-      })
-      .then((respose) => {
-        setUsername(respose.data.name);
-      });
-  }, []);
   return (
     <>
       <div className="border-b flex justify-between px-10 py-4 items-center">
@@ -34,7 +21,7 @@ export default function Appbar() {
             </button>
           </Link>
 
-          <Avatar name={username} size={"big"} />
+          <Avatar name={userName} size={"big"} />
         </div>
       </div>
     </>
