@@ -20,8 +20,9 @@ export default function Appbar() {
               New Post
             </button>
           </Link>
-
-          <Avatar name={userName} size={"big"} />
+          <Link to={"/user"}>
+            <Avatar name={userName} size={"big"} />
+          </Link>
         </div>
       </div>
     </>
