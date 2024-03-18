@@ -65,6 +65,9 @@ postRouter.get("/bulk", async (c) => {
 
   try {
     const posts = await prisma.post.findMany({
+      where: {
+        published: true,
+      },
       orderBy: {
         createdOn: "desc",
       },
