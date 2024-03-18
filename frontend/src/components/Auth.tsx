@@ -1,16 +1,19 @@
-import { SingupInput } from "@rahmatdeep/blogging-app-common";
+import { SingupInput, signupInput } from "@rahmatdeep/blogging-app-common";
 import axios from "axios";
 
 import { Link, useNavigate } from "react-router-dom";
 import { BACKEND_URl } from "../config";
 import { SubmitHandler, UseFormRegister, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 export default function Auth({ type }: { type: "signup" | "signin" }) {
   const {
     register,
     handleSubmit,
-    formState: { isSubmitting },
-  } = useForm<SingupInput>();
+    formState: { isSubmitting, errors },
+  } = useForm<SingupInput>({
+    resolver: zodResolver(signupInput),
+  });
 
   const navigate = useNavigate();
   const sendRequest: SubmitHandler<SingupInput> = async (data) => {
@@ -70,6 +73,11 @@ export default function Auth({ type }: { type: "signup" | "signin" }) {
                   disabled={isSubmitting}
                 />
               )}
+              {type === "signup" && errors.name && (
+                <div className="text-red-500 w-full text-left">
+                  {errors.name.message}
+                </div>
+              )}
               <LabeledInput
                 label="Email"
                 name="email"
@@ -77,6 +85,11 @@ export default function Auth({ type }: { type: "signup" | "signin" }) {
                 register={register}
                 disabled={isSubmitting}
               />
+              {errors.email && (
+                <div className="text-red-500 w-full text-left">
+                  {errors.email.message}
+                </div>
+              )}
               <LabeledInput
                 label="Password"
                 placeholder="password"
@@ -85,6 +98,11 @@ export default function Auth({ type }: { type: "signup" | "signin" }) {
                 inputType="password"
                 disabled={isSubmitting}
               />
+              {errors.password && (
+                <div className="text-red-500 w-full text-left">
+                  {errors.password.message}
+                </div>
+              )}
               {isSubmitting ? (
                 <button
                   disabled
