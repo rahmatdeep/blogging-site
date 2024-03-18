@@ -95,8 +95,8 @@ postRouter.get("/bulk", async (c) => {
 
   try {
     const posts = await prisma.post.findMany({
-      orderBy:{
-        createdOn: 'desc'
+      orderBy: {
+        createdOn: "desc",
       },
       select: {
         content: true,
@@ -148,5 +148,26 @@ postRouter.get("/:id", async (c) => {
     console.log(e);
     c.status(ResponseStatus.ServorError);
     c.json({ msg: "error while fetching posts" });
+  }
+});
+
+postRouter.delete("/:id", async (c) => {
+  const prisma = new PrismaClient({
+    datasourceUrl: c.env.DATABASE_URL,
+  }).$extends(withAccelerate());
+
+  const id = c.req.param("id");
+
+  try {
+    const post = await prisma.post.delete({
+      where: {
+        id: id,
+      },
+    });
+    return c.json({ msg: "post deleted" });
+  } catch (e) {
+    console.log(e);
+    c.status(ResponseStatus.ServorError);
+    c.json({ msg: "error while deleting posts" });
   }
 });
