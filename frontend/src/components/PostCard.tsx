@@ -49,7 +49,7 @@ export default function PostCard({
             {content.slice(0, 150) + "..."}
           </div>
           <div className="pt-4 text-slate-500 text-sm font-thin">
-            {`${Math.ceil(content.length / 100)} minute(s)`}
+            {`${Math.ceil(content.length / 500)} minute(s)`}
           </div>
         </div>
       </Link>
