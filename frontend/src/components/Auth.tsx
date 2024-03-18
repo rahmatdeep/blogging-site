@@ -67,6 +67,7 @@ export default function Auth({ type }: { type: "signup" | "signin" }) {
                   placeholder="Rahmatdeep Singh"
                   register={register}
                   name="name"
+                  disabled={isSubmitting}
                 />
               )}
               <LabeledInput
@@ -74,6 +75,7 @@ export default function Auth({ type }: { type: "signup" | "signin" }) {
                 name="email"
                 placeholder="rahmatdeep@gmail.com"
                 register={register}
+                disabled={isSubmitting}
               />
               <LabeledInput
                 label="Password"
@@ -81,6 +83,7 @@ export default function Auth({ type }: { type: "signup" | "signin" }) {
                 register={register}
                 name="password"
                 inputType="password"
+                disabled={isSubmitting}
               />
               {isSubmitting ? (
                 <button
@@ -129,6 +132,7 @@ interface LabelledInputType {
   register: UseFormRegister<SingupInput>;
   inputType?: string;
   name: keyof SingupInput;
+  disabled: boolean;
 }
 
 function LabeledInput({
@@ -137,6 +141,7 @@ function LabeledInput({
   register,
   inputType,
   name,
+  disabled,
 }: LabelledInputType) {
   return (
     <div>
@@ -144,6 +149,7 @@ function LabeledInput({
         {label}
       </label>
       <input
+        disabled={disabled}
         {...register(name)}
         type={inputType || "text"}
         className=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
