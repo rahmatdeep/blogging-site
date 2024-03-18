@@ -5,10 +5,12 @@ import { PublishTypes } from "./Publish";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { BACKEND_URl } from "../config";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import Spinner from "../components/Spinner";
 
 export default function Edit() {
   const { id } = useParams();
+  const [loading, setLoading] = useState(true);
 
   const {
     register,
@@ -62,24 +64,37 @@ export default function Edit() {
         console.log(response.data.post.title);
 
         setValue("content", response.data.post.content);
+        setLoading(false);
       });
   }, [id, setValue]);
 
-
-  return (
-    <>
-      <div>
+  if (loading) {
+    return (
+      <>
         <Appbar />
-      </div>
-      <div className="flex flex-col items-center">
-        <PublishComponent
-          errors={errors}
-          handleSubmit={handleSubmit}
-          isSubmitting={isSubmitting}
-          register={register}
-          sendRequest={sendRequest}
-        />
-      </div>
-    </>
-  );
+        <div className="h-screen flex flex-col justify-center">
+          <div className="flex justify-center">
+            <Spinner />
+          </div>
+        </div>
+      </>
+    );
+  } else {
+    return (
+      <>
+        <div>
+          <Appbar />
+        </div>
+        <div className="flex flex-col items-center">
+          <PublishComponent
+            errors={errors}
+            handleSubmit={handleSubmit}
+            isSubmitting={isSubmitting}
+            register={register}
+            sendRequest={sendRequest}
+          />
+        </div>
+      </>
+    );
+  }
 }
