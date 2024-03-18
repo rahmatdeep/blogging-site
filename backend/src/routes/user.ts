@@ -98,19 +98,16 @@ userRouter.get("/", async (c) => {
   const userId = c.get("userId");
   console.log(userId);
   try {
-    const user = await prisma.user.findUnique({
+    const user = await prisma.user.findUniqueOrThrow({
       where: {
         id: userId,
       },
       select: {
         name: true,
+        id: true,
       },
     });
-    if (user?.name === null) {
-      return c.json({ name: "Anonymous" });
-    } else {
-      return c.json({ name: user?.name });
-    }
+    return c.json(user);
   } catch (e) {
     console.log(e);
     c.status(ResponseStatus.NotFound);
