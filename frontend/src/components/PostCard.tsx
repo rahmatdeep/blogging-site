@@ -70,7 +70,9 @@ export function Avatar({
         size === "small" ? "w-6 h-6" : "w-10 h-10"
       } overflow-hidden bg-gray-100 rounded-full`}
     >
-      <span className="font-extralight text-gray-800">{name[0]}</span>
+      <span className="font-extralight text-gray-800">
+        {name[0].toUpperCase()}
+      </span>
     </div>
   );
 }
