@@ -34,13 +34,17 @@ export default function Auth({ type }: { type: "signup" | "signin" }) {
       <div className="h-screen flex justify-center flex-col">
         <div className="flex justify-center ">
           <div>
-            <div className="px-10 flex flex-col items-center">
+            <div
+              className={`${
+                type === "signup" ? "px-10" : "px-6"
+              } flex flex-col items-center`}
+            >
               <div className="text-3xl font-extra-bold ">
                 {type === "signup"
                   ? "Create An Account"
                   : "Login to your Account"}
               </div>
-              <div className="text-slate-400">
+              <div className="text-slate-400 pt-2">
                 {type === "signin"
                   ? "Don't have an account?"
                   : "Already have an account?"}
@@ -62,13 +66,13 @@ export default function Auth({ type }: { type: "signup" | "signin" }) {
                 />
               )}
               <LabeledInput
-                label="email"
+                label="Email"
                 name="email"
                 placeholder="rahmatdeep@gmail.com"
                 register={register}
               />
               <LabeledInput
-                label="password"
+                label="Password"
                 placeholder="password"
                 register={register}
                 name="password"
