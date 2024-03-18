@@ -83,7 +83,6 @@ export default function PublishComponent({
 
 interface TextEditorProps {
   children: ReactNode;
-
   register: UseFormRegister<PublishTypes>;
 }
 
