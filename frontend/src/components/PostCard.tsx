@@ -71,7 +71,7 @@ export function Avatar({
       } overflow-hidden bg-gray-100 rounded-full`}
     >
       <span className="font-extralight text-gray-800">
-        {name[0].toUpperCase()}
+        {name[0]?.toUpperCase()}
       </span>
     </div>
   );
