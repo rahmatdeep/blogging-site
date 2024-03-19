@@ -9,20 +9,23 @@ import Publish from "./pages/Publish";
 import Edit from "./pages/Edit";
 import User from "./pages/User";
 import Home from "./pages/Home";
+import PrivateRoutes from "./utils/PrivateRoutes";
 
 function App() {
   return (
     <>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/user" element={<User />} />
-          <Route path="/edit/:id" element={<Edit />} />
+          <Route element={<PrivateRoutes />}>
+            <Route element={<Home />} path="/" />
+            <Route path="/user" element={<User />} />
+            <Route path="/edit/:id" element={<Edit />} />
+            <Route path="/post/:id" element={<Post />} />
+            <Route path="/posts" element={<Posts />} />
+            <Route path="/publish" element={<Publish />} />
+          </Route>
           <Route path="/signup" element={<Signup />} />
           <Route path="/signin" element={<Signin />} />
-          <Route path="/post/:id" element={<Post />} />
-          <Route path="/posts" element={<Posts />} />
-          <Route path="/publish" element={<Publish />} />
         </Routes>
       </BrowserRouter>
     </>
