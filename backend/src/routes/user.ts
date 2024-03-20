@@ -4,6 +4,7 @@ import { withAccelerate } from "@prisma/extension-accelerate";
 import { sign } from "hono/jwt";
 import { signinInput, signupInput } from "@rahmatdeep/blogging-app-common";
 import authMiddleWare from "../middleware/auth";
+import { hashPassword } from "../utils/hash";
 
 enum ResponseStatus {
   Success = 200,
@@ -29,6 +30,13 @@ userRouter.post("/signup", async (c) => {
   }).$extends(withAccelerate());
 
   const body = await c.req.json();
+
+  const hashedPassword = await hashPassword(body.password);
+
+  if (!hashedPassword) {
+    return;
+  }
+
   const { success } = signupInput.safeParse(body);
   if (!success) {
     c.status(ResponseStatus.InvalidCredentials);
@@ -38,7 +46,7 @@ userRouter.post("/signup", async (c) => {
     const user = await prisma.user.create({
       data: {
         email: body.email,
-        password: body.password,
+        password: hashedPassword.hashedPassword,
         name: body.name,
       },
     });
@@ -57,6 +65,7 @@ userRouter.post("/signin", async (c) => {
   }).$extends(withAccelerate());
 
   const body = await c.req.json();
+  const hashedPassword = await hashPassword(body.password);
   const { success } = signinInput.safeParse(body);
   if (!success) {
     c.status(ResponseStatus.InvalidCredentials);
@@ -66,7 +75,7 @@ userRouter.post("/signin", async (c) => {
     const user = await prisma.user.findUnique({
       where: {
         email: body.email,
-        password: body.password,
+        password: hashedPassword?.hashedPassword,
       },
       select: {
         id: true,
