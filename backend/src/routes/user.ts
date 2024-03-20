@@ -117,6 +117,7 @@ userRouter.get("/", async (c) => {
         bio: true,
       },
     });
+    user.name === null ? (user.name = "Anonymous") : null;
     return c.json(user);
   } catch (e) {
     console.log(e);
