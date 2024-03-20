@@ -22,11 +22,9 @@ export async function hashPassword(password: string) {
       .map((byte) => byte.toString(16).padStart(2, "0"))
       .join("");
 
-    return { publicKey, hashedPassword: hashHex };
+    return { hashedPassword: hashHex };
   } catch (e) {
     console.error("Error: ", e);
     return null;
   }
 }
-
-
