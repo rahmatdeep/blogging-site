@@ -94,7 +94,7 @@ export default function User() {
             <button
               onClick={handleSubmit(sendRequest)}
               type="button"
-              className="focus:outline-none text-black bg-slate-100  hover:bg-slate-200  font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 md:col-span-2"
+              className="focus:outline-none text-black bg-slate-100  hover:bg-slate-200  font-medium rounded-lg text-sm px-5 py-2.5  mb-1 md:col-span-2"
             >
               Update
             </button>
@@ -104,7 +104,7 @@ export default function User() {
                 navigate("/signin");
               }}
               type="button"
-              className="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 md:col-span-2"
+              className="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5  mb-2 md:col-span-2"
             >
               Sign out
             </button>
