@@ -7,10 +7,12 @@ import axios from "axios";
 import { BACKEND_URl } from "../config";
 import { useEffect, useState } from "react";
 import Spinner from "../components/Spinner";
+import { useUser } from "../hooks";
 
 export default function Edit() {
   const { id } = useParams();
   const [loading, setLoading] = useState(true);
+  const { userName, userLoading } = useUser();
 
   const {
     register,
@@ -68,10 +70,10 @@ export default function Edit() {
       });
   }, [id, setValue]);
 
-  if (loading) {
+  if (loading || userLoading) {
     return (
       <>
-        <Appbar />
+        <Appbar name="" />
         <div className="h-screen flex flex-col justify-center">
           <div className="flex justify-center">
             <Spinner />
@@ -83,7 +85,7 @@ export default function Edit() {
     return (
       <>
         <div>
-          <Appbar />
+          <Appbar name={userName} />
         </div>
         <div className="flex flex-col items-center">
           <PublishComponent
