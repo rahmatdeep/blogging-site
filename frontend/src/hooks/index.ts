@@ -14,13 +14,10 @@ export interface Post {
   };
 }
 
-interface User {
-  userName: string;
-  userId: string;
-}
+
 
 export function usePosts() {
-  const [loading, setLoading] = useState(true);
+  const [postsLoading, setPostsLoading] = useState(true);
   const [posts, setPosts] = useState<Post[]>([]);
 
   useEffect(() => {
@@ -32,18 +29,18 @@ export function usePosts() {
       })
       .then((response) => {
         setPosts(response.data.posts);
-        setLoading(false);
+        setPostsLoading(false);
       });
   }, []);
 
   return {
-    loading,
+    postsLoading,
     posts,
   };
 }
 
 export function usePost({ id }: { id: string }) {
-  const [loading, setLoading] = useState(true);
+  const [postLoading, setPostLoading] = useState(true);
   const [post, setPost] = useState<Post>();
 
   useEffect(() => {
@@ -55,20 +52,20 @@ export function usePost({ id }: { id: string }) {
       })
       .then((response) => {
         setPost(response.data.post);
-        setLoading(false);
+        setPostLoading(false);
       });
   }, [id]);
 
   return {
-    loading,
+    postLoading,
     post,
   };
 }
 
-export function useUser(): User {
+export function useUser() {
   const [userId, setUserId] = useState("");
   const [userName, setUserName] = useState("");
-
+  const [userLoading, setUserLoading] = useState(true);
   useEffect(() => {
     axios
       .get(`${BACKEND_URl}/api/v1/user`, {
@@ -79,8 +76,9 @@ export function useUser(): User {
       .then((response) => {
         setUserId(response.data.id);
         setUserName(response.data.name);
+        setUserLoading(false);
       });
   }, []);
 
-  return { userId, userName };
+  return { userLoading, userId, userName };
 }

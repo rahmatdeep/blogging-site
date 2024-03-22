@@ -1,17 +1,14 @@
 import { Link } from "react-router-dom";
 import { Avatar } from "./PostCard";
-import { useUser } from "../hooks";
 
-export default function Appbar() {
-  const { userName } = useUser();
-
+export default function Appbar({ name }: { name: string }) {
   return (
     <>
       <div className="border-b flex justify-between px-10 py-4 items-center">
         <Link className="cursor-pointer" to={"/posts"}>
           <div className="text-xl font-medium">Blogging App</div>
         </Link>
-        <div>
+        <div className="flex">
           <Link to={"/publish"}>
             <button
               type="button"
@@ -21,7 +18,7 @@ export default function Appbar() {
             </button>
           </Link>
           <Link to={"/user"}>
-            <Avatar name={userName} size={"big"} />
+            <Avatar name={name} size={"big"} />
           </Link>
         </div>
       </div>

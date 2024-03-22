@@ -6,9 +6,11 @@ import { BACKEND_URl } from "../config";
 import { useNavigate } from "react-router-dom";
 
 export default function FullPost({
+  name,
   post,
   userId,
 }: {
+  name: string;
   post: Post;
   userId: string;
 }) {
@@ -28,7 +30,7 @@ export default function FullPost({
   return (
     <>
       <div>
-        <Appbar />
+        <Appbar name={name} />
         <div className="flex justify-center">
           <div className="lg:grid lg:grid-cols-12 lg:gap-0 px-10 w-full pt-200 max-w-screen-2xl pt-12 flex flex-col gap-5">
             <div className=" lg:col-span-8">

@@ -2,8 +2,9 @@ import axios from "axios";
 import Appbar from "../components/AppBar";
 import { BACKEND_URl } from "../config";
 import { useNavigate } from "react-router-dom";
-import { SubmitHandler,  useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import PublishComponent from "../components/PublishComponent";
+import { useUser } from "../hooks";
 
 export type PublishTypes = {
   title: string;
@@ -41,15 +42,22 @@ export default function Publish() {
     }
   };
 
+  const { userName } = useUser();
+
   return (
     <>
       <div>
-        <Appbar />
+        <Appbar name={userName} />
       </div>
       <div className="flex flex-col items-center">
-        <PublishComponent errors={errors} handleSubmit={handleSubmit} isSubmitting={isSubmitting} register={register} sendRequest={sendRequest} />
+        <PublishComponent
+          errors={errors}
+          handleSubmit={handleSubmit}
+          isSubmitting={isSubmitting}
+          register={register}
+          sendRequest={sendRequest}
+        />
       </div>
     </>
   );
 }
-

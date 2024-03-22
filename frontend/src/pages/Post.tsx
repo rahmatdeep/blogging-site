@@ -6,16 +6,17 @@ import Appbar from "../components/AppBar";
 
 export default function Post() {
   const { id } = useParams();
-  const { post, loading } = usePost({
+  const { post, postLoading } = usePost({
     id: String(id),
   });
+  const { userLoading, userName } = useUser();
 
-  const{userId} = useUser()
+  const { userId } = useUser();
 
-  if (loading) {
+  if (postLoading || userLoading) {
     return (
       <>
-        <Appbar />
+        <Appbar name="" />
         <div className="h-screen flex flex-col justify-center">
           <div className="flex justify-center">
             <Spinner />
@@ -23,11 +24,11 @@ export default function Post() {
         </div>
       </>
     );
-  } else if (post) {
+  } else if (post && userName) {
     return (
       <>
         <div>
-          <FullPost post={post} userId={userId}/>
+          <FullPost name={userName} post={post} userId={userId} />
         </div>
       </>
     );

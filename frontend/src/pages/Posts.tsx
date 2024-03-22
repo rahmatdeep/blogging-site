@@ -1,15 +1,16 @@
 import Appbar from "../components/AppBar";
 import PostCard from "../components/PostCard";
 import Skeleton from "../components/Skeleton";
-import { usePosts } from "../hooks";
+import { usePosts, useUser } from "../hooks";
 
 export default function Posts() {
-  const { loading, posts } = usePosts();
+  const { postsLoading, posts } = usePosts();
+  const { userName, userLoading } = useUser();
 
-  if (loading) {
+  if (postsLoading || userLoading) {
     return (
       <div>
-        <Appbar />
+        <Appbar name="" />
         <div className="flex justify-center pt-4">
           <div>
             <Skeleton />
@@ -26,7 +27,7 @@ export default function Posts() {
   return (
     <>
       <div>
-        <Appbar />
+        <Appbar name={userName} />
         <div className="flex justify-center pt-4">
           <div className="">
             {posts.map((post) => (
