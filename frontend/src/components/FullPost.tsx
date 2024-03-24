@@ -4,15 +4,16 @@ import Appbar from "./AppBar";
 import { Avatar } from "./PostCard";
 import { BACKEND_URl } from "../config";
 import { useNavigate } from "react-router-dom";
+import { useEffect, useRef } from "react";
 
 export default function FullPost({
   name,
   post,
-  userId,
+  isUser,
 }: {
   name: string;
   post: Post;
-  userId: string;
+  isUser: boolean;
 }) {
   const navigate = useNavigate();
   const timestamp = post.createdOn;
@@ -27,17 +28,25 @@ export default function FullPost({
     timeZone: "Asia/Kolkata",
   };
   const formattedDate = new Intl.DateTimeFormat("en-IN", options).format(date);
+  const contentRef = useRef(null);
+  useEffect(() => {
+    if (contentRef.current === null) {
+      return;
+    }
+    (contentRef.current as HTMLElement).innerHTML = post.content;
+  }, [contentRef, post]);
+  
   return (
     <>
       <div>
         <Appbar name={name} />
         <div className="flex justify-center">
           <div className="lg:grid lg:grid-cols-12 lg:gap-0 px-10 w-full pt-200 max-w-screen-2xl pt-12 flex flex-col gap-5">
-            <div className=" lg:col-span-8">
+            <div className=" lg:col-span-9">
               <div className="flex justify-between items-center">
                 <div className="text-5xl font-extrabold">{post.title} </div>
-                <p className="">
-                  {userId === post.author.id ? (
+                <p className="pl-6 lg:pr-6">
+                  {isUser && (
                     <>
                       <button
                         type="button"
@@ -66,16 +75,14 @@ export default function FullPost({
                         Delete
                       </button>
                     </>
-                  ) : (
-                    ""
                   )}
                 </p>
               </div>
               <div className="text-slate-500 pt-2">{formattedDate}</div>
-              <div className="pt-4">{post.content}</div>
+              <div className="pt-4" ref={contentRef}></div>
             </div>
             <hr className="lg:hidden"></hr>
-            <div className=" lg:col-span-4">
+            <div className=" lg:border-l-2 lg:pl-6 lg:col-span-3">
               <div className="text-slate-600 text-lg">Author</div>
 
               <div className="flex pt-1">
@@ -86,7 +93,7 @@ export default function FullPost({
                   <div className="text-2xl font-bold">
                     {post.author.name || "Anon"}
                   </div>
-                  <div className="pt-2 text-slate-500">{post.author.bio}</div>
+                  <div className="pt-1 text-slate-500">{post.author.bio}</div>
                 </div>
               </div>
             </div>
@@ -96,3 +103,4 @@ export default function FullPost({
     </>
   );
 }
+

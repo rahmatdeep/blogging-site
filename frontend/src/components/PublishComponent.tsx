@@ -1,11 +1,15 @@
 import { ReactNode } from "react";
+import "react-quill/dist/quill.snow.css";
 import {
+  Control,
+  Controller,
   FieldErrors,
   SubmitHandler,
   UseFormHandleSubmit,
   UseFormRegister,
 } from "react-hook-form";
 import { PublishTypes } from "../pages/Publish";
+import ReactQuill from "react-quill";
 
 interface PublishComponentTypes {
   handleSubmit: UseFormHandleSubmit<PublishTypes, undefined>;
@@ -13,6 +17,7 @@ interface PublishComponentTypes {
   register: UseFormRegister<PublishTypes>;
   isSubmitting: boolean;
   errors: FieldErrors<PublishTypes>;
+  control: Control<PublishTypes>;
 }
 
 export default function PublishComponent({
@@ -21,6 +26,7 @@ export default function PublishComponent({
   register,
   isSubmitting,
   errors,
+  control,
 }: PublishComponentTypes) {
   return (
     <>
@@ -30,12 +36,13 @@ export default function PublishComponent({
       >
         <input
           {...register("title")}
+          autoFocus
           type="text"
           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  "
           placeholder="Title"
         ></input>
         <div className="pt-2">
-          <TextEditor register={register}>
+          <TextEditor control={control}>
             {isSubmitting ? (
               <button
                 disabled
@@ -83,22 +90,31 @@ export default function PublishComponent({
 
 interface TextEditorProps {
   children: ReactNode;
-  register: UseFormRegister<PublishTypes>;
+  control: Control<PublishTypes>;
 }
 
 function TextEditor(props: TextEditorProps) {
-  const reg = props.register;
   return (
     <div>
       <div className="w-full  mb-4 border border-gray-300 rounded-lg bg-gray-50 ">
         <div className="px-1 py-1 bg-white rounded-t-lg ">
-          <textarea
+          <Controller
+            name="content"
+            control={props.control}
+            render={({ field }) => (
+              <ReactQuill
+                theme="snow"
+                className="w-full px-0 text-sm text-gray-900 bg-white border-0  focus:outline-none"
+                {...field}
+              />
+            )}
+          />
+          {/* <ReactQuill
             {...reg("content")}
-            rows={4}
+
             className="w-full px-0 text-sm text-gray-900 bg-white border-0  focus:outline-none "
             placeholder="Write the content"
-            required
-          />
+          /> */}
         </div>
 
         <div className="flex items-center justify-between px-3 py-2 border-t ">

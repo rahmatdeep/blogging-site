@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 
 interface PostCardProps {
@@ -27,7 +28,13 @@ export default function PostCard({
     timeZone: "Asia/Kolkata",
   };
   const formattedDate = new Intl.DateTimeFormat("en-IN", options).format(date);
-
+  const contentRef = useRef(null);
+  useEffect(() => {
+    if (contentRef.current === null) {
+      return;
+    }
+    (contentRef.current as HTMLElement).innerHTML = content;
+  });
   return (
     <>
       <Link to={`/post/${id}`}>
@@ -45,9 +52,10 @@ export default function PostCard({
             </div>
           </div>
           <div className="text-xl font-semibold pt-2">{title}</div>
-          <div className="text-md font-thin">
-            {content.slice(0, 150) + "..."}
-          </div>
+          <div
+            className="text-md font-thin line-clamp-2"
+            ref={contentRef}
+          ></div>
           <div className="pt-4 text-slate-500 text-sm font-thin">
             {`${Math.ceil(content.length / 500)} minute(s)`}
           </div>
@@ -67,7 +75,7 @@ export function Avatar({
   return (
     <div
       className={`relative inline-flex items-center justify-center ${
-        size === "small" ? "w-6 h-6" : "w-10 h-10"
+        size === "small" ? "w-6 h-6" : "w-14 h-14"
       } overflow-hidden bg-gray-100 rounded-full`}
     >
       <span className="font-extralight text-gray-800">

@@ -8,11 +8,11 @@ export default function Appbar({ name }: { name: string }) {
         <Link className="cursor-pointer" to={"/posts"}>
           <div className="text-xl font-medium">Blogging App</div>
         </Link>
-        <div className="flex">
+        <div className="flex items-center">
           <Link to={"/publish"}>
             <button
               type="button"
-              className="mr-4 focus:outline-none text-black bg-slate-100 hover:bg-slate-200  font-small rounded-lg text-md px-3 py-2 "
+              className="mr-4 focus:outline-none text-black border  hover:bg-slate-50  font-small rounded-lg text-md px-3 py-2 "
             >
               New Post
             </button>
