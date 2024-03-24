@@ -10,5 +10,9 @@ h3{
 }
 
 @tailwind components;
+.anchorstyling a{
+    color: blue;
+    text-decoration: underline
+}
 @tailwind utilities;
 

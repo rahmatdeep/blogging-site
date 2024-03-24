@@ -79,7 +79,7 @@ export default function FullPost({
                 </p>
               </div>
               <div className="text-slate-500 pt-2">{formattedDate}</div>
-              <div className="pt-4" ref={contentRef}></div>
+              <div className="pt-4 anchorstyling" ref={contentRef} ></div>
             </div>
             <hr className="lg:hidden"></hr>
             <div className=" lg:border-l-2 lg:pl-6 lg:col-span-3">
