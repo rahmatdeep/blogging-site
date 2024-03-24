@@ -19,6 +19,7 @@ export default function Edit() {
     handleSubmit,
     setError,
     setValue,
+    control,
     formState: { isSubmitting, errors },
   } = useForm<PublishTypes>({
     defaultValues: {
@@ -89,6 +90,7 @@ export default function Edit() {
         </div>
         <div className="flex flex-col items-center">
           <PublishComponent
+            control={control}
             errors={errors}
             handleSubmit={handleSubmit}
             isSubmitting={isSubmitting}

@@ -3,6 +3,7 @@ import { usePost, useUser } from "../hooks";
 import FullPost from "../components/FullPost";
 import Spinner from "../components/Spinner";
 import Appbar from "../components/AppBar";
+import { useEffect, useState } from "react";
 
 export default function Post() {
   const { id } = useParams();
@@ -10,15 +11,21 @@ export default function Post() {
     id: String(id),
   });
   const { userLoading, userName } = useUser();
+  const [isUser, setisUser] = useState(false);
+  const [isUserLoading, setIsUserLoading] = useState(true);
 
   const { userId } = useUser();
+  useEffect(() => {
+    setisUser(post?.author.id === userId ? true : false);
+    setIsUserLoading(false)
+  }, [post, userId]);
 
-  if (postLoading || userLoading) {
+  if (postLoading || userLoading || isUserLoading) {
     return (
       <>
         <Appbar name="" />
-        <div className="h-screen flex flex-col justify-center">
-          <div className="flex justify-center">
+        <div className="flex flex-col justify-center">
+          <div className="absolute top-1/2 left-1/2 flex justify-center">
             <Spinner />
           </div>
         </div>
@@ -28,7 +35,7 @@ export default function Post() {
     return (
       <>
         <div>
-          <FullPost name={userName} post={post} userId={userId} />
+          <FullPost name={userName} post={post} isUser={isUser} />
         </div>
       </>
     );

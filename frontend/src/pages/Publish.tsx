@@ -16,6 +16,7 @@ export default function Publish() {
     register,
     handleSubmit,
     setError,
+    control,
     formState: { isSubmitting, errors },
   } = useForm<PublishTypes>();
 
@@ -51,6 +52,7 @@ export default function Publish() {
       </div>
       <div className="flex flex-col items-center">
         <PublishComponent
+          control={control}
           errors={errors}
           handleSubmit={handleSubmit}
           isSubmitting={isSubmitting}
