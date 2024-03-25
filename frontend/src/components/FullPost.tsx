@@ -41,13 +41,13 @@ export default function FullPost({
       <div>
         <Appbar name={name} />
         <div className="flex justify-center">
-          <div className="lg:grid lg:grid-cols-12 lg:gap-0 px-10 w-full pt-200 max-w-screen-2xl pt-12 flex flex-col gap-5">
+          <div className="lg:grid lg:grid-cols-12 lg:gap-0 px-10 w-full pt-200 max-w-screen overflow-clip lg:max-w-screen-2xl pt-12 flex flex-col gap-5">
             <div className=" lg:col-span-9">
-              <div className="flex justify-between items-center">
+              <div className="flex lg:flex-row flex-col-reverse lg:justify-between lg:items-center">
                 <div className="text-5xl font-extrabold overflow-clip">
                   {post.title}
                 </div>
-                <p className="pl-6 lg:pr-6 ">
+                <p className="lg:pl-6 lg:pr-6 ">
                   {isUser && (
                     <div className="flex gap-1">
                       <button
