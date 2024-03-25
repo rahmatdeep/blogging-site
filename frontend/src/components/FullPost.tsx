@@ -193,7 +193,7 @@ export default function FullPost({
               <div className="pt-4 anchorstyling" ref={contentRef}></div>
             </div>
             <hr className="lg:hidden"></hr>
-            <div className=" lg:border-l-2 lg:pl-6 lg:col-span-3">
+            <div className=" lg:border-l-2 lg:pl-6 lg:col-span-3 pb-4 lg:pb-4">
               <div className="text-slate-600 text-lg">Author</div>
 
               <div className="flex pt-1">
