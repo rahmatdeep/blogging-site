@@ -21,6 +21,7 @@ export function usePosts({ getPage }: { getPage: number }) {
   const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
+    setPostsLoading(true)
     axios
       .get(`${BACKEND_URl}/api/v1/post/bulk?page=${getPage}`, {
         headers: {

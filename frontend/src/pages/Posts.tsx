@@ -1,25 +1,32 @@
-import { useState, useEffect, useRef } from "react";
+import { useEffect } from "react";
 import Appbar from "../components/AppBar";
 import PostCard from "../components/PostCard";
 import Skeleton from "../components/Skeleton";
 import { usePosts, useUser } from "../hooks";
+import { useSearchParams } from "react-router-dom";
 
 export default function Posts() {
-  const [page, SetPage] = useState(1);
-  const [pageUpdate, setPageUpdate] = useState(false);
+  const [pageParams, SetPageParams] = useSearchParams({ page: "1" });
+  const page = parseInt(pageParams.get("page") || "1");
+
   const { postsLoading, posts, totalPages, currentPage } = usePosts({
     getPage: Number(page),
   });
   const { userName, userLoading } = useUser();
-  const AppbarRef = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    setPageUpdate(false);
-    if (AppbarRef.current !== null) {
-      window.scrollTo({ top: AppbarRef.current.offsetTop, behavior: "smooth" });
-    }
-  }, [currentPage]);
 
-  if (postsLoading || userLoading || pageUpdate) {
+  useEffect(() => {
+    if (!postsLoading) {
+      window.scrollTo(0, 0);
+      // Or, if you want to scroll to the AppbarRef element specifically:
+      // AppbarRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [postsLoading]);
+
+  const navigateToPage = (newPage: number) => {
+    SetPageParams({ page: String(newPage) });
+  };
+
+  if (postsLoading || userLoading) {
     return (
       <div>
         <Appbar name="" />
@@ -38,7 +45,7 @@ export default function Posts() {
   }
   return (
     <>
-      <div ref={AppbarRef}>
+      <div>
         <Appbar name={userName} />
         <div className="flex justify-center pt-4 flex-col items-center">
           <div className="">
@@ -56,10 +63,7 @@ export default function Posts() {
           <div className="p-4">
             {currentPage > 1 && (
               <button
-                onClick={() => {
-                  SetPage((prevPage) => prevPage - 1);
-                  setPageUpdate(true);
-                }}
+                onClick={() => navigateToPage(page - 1)}
                 type="button"
                 className="mr-4 focus:outline-none text-black border  hover:bg-slate-50  font-small rounded-lg text-md px-3 py-2 "
               >
@@ -68,10 +72,7 @@ export default function Posts() {
             )}
             {currentPage !== totalPages && (
               <button
-                onClick={() => {
-                  SetPage((prevPage) => prevPage + 1);
-                  setPageUpdate(true);
-                }}
+                onClick={() => navigateToPage(page + 1)}
                 type="button"
                 className="mr-4 focus:outline-none text-black border  hover:bg-slate-50  font-small rounded-lg text-md px-3 py-2 "
               >
