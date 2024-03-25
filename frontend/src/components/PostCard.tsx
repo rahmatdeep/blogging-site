@@ -38,7 +38,7 @@ export default function PostCard({
   return (
     <>
       <Link to={`/post/${id}`}>
-        <div className="p-4 border-b border-slate-200 pb-4 overflow-clip w-screen max-w-3xl cursor-pointer">
+        <div className="p-4 border-b border-slate-200 pb-4 overflow-clip w-screen lg:max-w-3xl max-w-screen  cursor-pointer">
           <div className="flex">
             <div className="">
               <Avatar name={authorName} size={"small"} />
