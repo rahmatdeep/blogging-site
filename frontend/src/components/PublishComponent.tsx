@@ -32,7 +32,7 @@ export default function PublishComponent({
     <>
       <form
         onSubmit={handleSubmit(sendRequest)}
-        className="max-w-screen-lg w-full pt-8"
+        className="max-w-screen-lg w-full pt-8 px-2"
       >
         <input
           {...register("title")}
