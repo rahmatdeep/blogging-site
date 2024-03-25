@@ -14,26 +14,30 @@ export interface Post {
   };
 }
 
-
-
-export function usePosts() {
+export function usePosts({ getPage }: { getPage: number }) {
   const [postsLoading, setPostsLoading] = useState(true);
   const [posts, setPosts] = useState<Post[]>([]);
+  const [totalPages, setTotalPages] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     axios
-      .get(`${BACKEND_URl}/api/v1/post/bulk`, {
+      .get(`${BACKEND_URl}/api/v1/post/bulk?page=${getPage}`, {
         headers: {
           Authorization: localStorage.getItem("token"),
         },
       })
       .then((response) => {
         setPosts(response.data.posts);
+        setCurrentPage(response.data.pagination.pageNumber);
+        setTotalPages(response.data.pagination.totalPages);
         setPostsLoading(false);
       });
-  }, []);
+  }, [getPage]);
 
   return {
+    totalPages,
+    currentPage,
     postsLoading,
     posts,
   };

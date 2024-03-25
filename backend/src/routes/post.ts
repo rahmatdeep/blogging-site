@@ -64,6 +64,15 @@ postRouter.get("/bulk", async (c) => {
     datasourceUrl: c.env.DATABASE_URL,
   }).$extends(withAccelerate());
 
+  const page = c.req.query("page") || "1";
+  const size = c.req.query("size") || "10";
+
+  const pageNumber = parseInt(page, 10);
+  const pageSize = parseInt(size, 10);
+
+  const skip = (pageNumber - 1) * pageSize;
+  const take = pageSize;
+
   try {
     const posts = await prisma.post.findMany({
       where: {
@@ -72,6 +81,8 @@ postRouter.get("/bulk", async (c) => {
       orderBy: {
         createdOn: "desc",
       },
+      skip,
+      take,
       select: {
         content: true,
         title: true,
@@ -85,7 +96,21 @@ postRouter.get("/bulk", async (c) => {
       },
     });
 
-    return c.json({ posts });
+    const totalCount = await prisma.post.count({
+      where: {
+        published: true,
+      },
+    });
+
+    return c.json({
+      posts,
+      pagination: {
+        pageNumber,
+        pageSize,
+        total: totalCount,
+        totalPages: Math.ceil(totalCount / pageSize),
+      },
+    });
   } catch (e) {
     console.log(e);
     c.status(ResponseStatus.ServorError);

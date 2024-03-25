@@ -12,7 +12,7 @@ export default function Appbar({ name }: { name: string }) {
           <Link to={"/publish"}>
             <button
               type="button"
-              className="mr-4 focus:outline-none text-black border  hover:bg-slate-50  font-small rounded-lg text-md px-3 py-2 "
+              className="mx-4 focus:outline-none text-black border  hover:bg-slate-50  font-small rounded-lg text-md px-3 py-2 "
             >
               New Post
             </button>
