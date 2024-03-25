@@ -44,13 +44,15 @@ export default function FullPost({
           <div className="lg:grid lg:grid-cols-12 lg:gap-0 px-10 w-full pt-200 max-w-screen-2xl pt-12 flex flex-col gap-5">
             <div className=" lg:col-span-9">
               <div className="flex justify-between items-center">
-                <div className="text-5xl font-extrabold">{post.title} </div>
+                <div className="text-5xl font-extrabold overflow-clip">
+                  {post.title}
+                </div>
                 <p className="pl-6 lg:pr-6 ">
                   {isUser && (
-                    <>
+                    <div className="flex gap-1">
                       <button
                         type="button"
-                        className="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-2.5 py-1.5 me-2  "
+                        className="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-2.5 py-1.5  "
                         onClick={() => {
                           navigate(`/edit/${post.id}`);
                         }}
@@ -183,7 +185,7 @@ export default function FullPost({
                           ></path>
                         </svg>
                       </button>
-                    </>
+                    </div>
                   )}
                 </p>
               </div>
