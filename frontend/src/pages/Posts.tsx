@@ -60,21 +60,24 @@ export default function Posts() {
               />
             ))}
           </div>
-          <div className="p-4">
+          <div className="p-4 flex items-center gap-4">
             {currentPage > 1 && (
               <button
                 onClick={() => navigateToPage(page - 1)}
                 type="button"
-                className="mr-4 focus:outline-none text-black border  hover:bg-slate-50  font-small rounded-lg text-md px-3 py-2 "
+                className="focus:outline-none text-black border  hover:bg-slate-50  font-small rounded-lg text-md px-3 py-2 "
               >
                 Prev Page
               </button>
             )}
+            <div>
+              {currentPage}/{totalPages}
+            </div>
             {currentPage !== totalPages && (
               <button
                 onClick={() => navigateToPage(page + 1)}
                 type="button"
-                className="mr-4 focus:outline-none text-black border  hover:bg-slate-50  font-small rounded-lg text-md px-3 py-2 "
+                className="focus:outline-none text-black border  hover:bg-slate-50  font-small rounded-lg text-md px-3 py-2 "
               >
                 Next Page
               </button>
