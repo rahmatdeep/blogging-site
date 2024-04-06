@@ -25,6 +25,12 @@ export default function Auth({ type }: { type: "signup" | "signin" }) {
       );
       const jwt = response.data.jwt;
       localStorage.setItem("token", `Bearer ${jwt}`);
+      const username = await axios.get(`${BACKEND_URl}/api/v1/user`, {
+        headers: {
+          Authorization: localStorage.getItem("token"),
+        },
+      });
+      localStorage.setItem("username",username.data.name)
       navigate("/posts");
     } catch (e: unknown) {
       if (axios.isAxiosError(e)) {
@@ -40,6 +46,7 @@ export default function Auth({ type }: { type: "signup" | "signin" }) {
       }
     }
   };
+
   return (
     <>
       <div className="h-screen flex justify-center flex-col">

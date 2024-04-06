@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import Appbar from "../components/AppBar";
 import PostCard from "../components/PostCard";
 import Skeleton from "../components/Skeleton";
-import { usePosts, useUser } from "../hooks";
+import { usePosts } from "../hooks";
 import { useSearchParams } from "react-router-dom";
 
 export default function Posts() {
@@ -12,7 +12,6 @@ export default function Posts() {
   const { postsLoading, posts, totalPages, currentPage } = usePosts({
     getPage: Number(page),
   });
-  const { userName, userLoading } = useUser();
 
   useEffect(() => {
     if (!postsLoading) {
@@ -26,10 +25,10 @@ export default function Posts() {
     SetPageParams({ page: String(newPage) });
   };
 
-  if (postsLoading || userLoading) {
+  if (postsLoading) {
     return (
       <div>
-        <Appbar name="" />
+        <Appbar />
         <div className="flex justify-center pt-4">
           <div>
             <Skeleton />
@@ -46,7 +45,7 @@ export default function Posts() {
   return (
     <>
       <div>
-        <Appbar name={userName} />
+        <Appbar />
         <div className="flex justify-center pt-4 flex-col items-center">
           <div className="">
             {posts.map((post) => (

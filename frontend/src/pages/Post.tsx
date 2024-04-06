@@ -23,7 +23,7 @@ export default function Post() {
   if (postLoading || userLoading || isUserLoading) {
     return (
       <>
-        <Appbar name="" />
+        <Appbar />
         <div className="flex flex-col justify-center">
           <div className="absolute top-1/2 left-1/2 flex justify-center">
             <Spinner />
