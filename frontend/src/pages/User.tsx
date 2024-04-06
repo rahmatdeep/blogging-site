@@ -5,24 +5,26 @@ import { BACKEND_URl } from "../config";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import Spinner from "../components/Spinner";
-import { useUser } from "../hooks";
 
 export default function User() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
-  const { userName, userLoading } = useUser();
 
   const { register, handleSubmit, setValue } = useForm();
 
   const sendRequest: SubmitHandler<FieldValues> = async (data) => {
     try {
-      const response = await axios.put(`${BACKEND_URl}/api/v1/user`, data, {
+      await axios.put(`${BACKEND_URl}/api/v1/user`, data, {
         headers: {
           Authorization: localStorage.getItem("token"),
         },
       });
-      console.log(response);
-
+      const username = await axios.get(`${BACKEND_URl}/api/v1/user`, {
+        headers: {
+          Authorization: localStorage.getItem("token"),
+        },
+      });
+      localStorage.setItem("username", username.data.name);
       navigate(`/posts`);
     } catch (e: unknown) {
       if (axios.isAxiosError(e)) {
@@ -50,10 +52,10 @@ export default function User() {
         setLoading(false);
       });
   }, [setValue]);
-  if (loading || userLoading) {
+  if (loading) {
     return (
       <>
-        <Appbar name="" />
+        <Appbar />
         <div className="h-screen flex flex-col justify-center">
           <div className="flex justify-center">
             <Spinner />
@@ -64,7 +66,7 @@ export default function User() {
   } else {
     return (
       <>
-        <Appbar name={userName} />
+        <Appbar />
         <div className="flex justify-center">
           <div className="grid px-10 gap-5 mb-6 md:grid-cols-2 max-w-screen-lg w-full pt-8">
             <div>
@@ -100,7 +102,7 @@ export default function User() {
             </button>
             <button
               onClick={() => {
-                localStorage.removeItem("token");
+                localStorage.clear();
                 navigate("/signin");
               }}
               type="button"

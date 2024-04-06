@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { Avatar } from "./PostCard";
 
-export default function Appbar({ name }: { name: string }) {
+export default function Appbar() {
   return (
     <>
       <div className="border-b flex justify-between px-10 py-4 items-center">
@@ -18,7 +18,10 @@ export default function Appbar({ name }: { name: string }) {
             </button>
           </Link>
           <Link to={"/user"}>
-            <Avatar name={name} size={"big"} />
+            <Avatar
+              name={String(localStorage.getItem("username"))}
+              size={"big"}
+            />
           </Link>
         </div>
       </div>

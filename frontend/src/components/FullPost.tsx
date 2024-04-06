@@ -7,7 +7,6 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useRef } from "react";
 
 export default function FullPost({
-  name,
   post,
   isUser,
 }: {
@@ -39,7 +38,7 @@ export default function FullPost({
   return (
     <>
       <div>
-        <Appbar name={name} />
+        <Appbar />
         <div className="flex justify-center">
           <div className="lg:grid lg:grid-cols-12 lg:gap-0 px-10 w-full pt-200 max-w-screen overflow-clip lg:max-w-screen-2xl pt-12 flex flex-col gap-5">
             <div className=" lg:col-span-9">

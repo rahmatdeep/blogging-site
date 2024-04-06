@@ -4,7 +4,6 @@ import { BACKEND_URl } from "../config";
 import { useNavigate } from "react-router-dom";
 import { SubmitHandler, useForm } from "react-hook-form";
 import PublishComponent from "../components/PublishComponent";
-import { useUser } from "../hooks";
 
 export type PublishTypes = {
   title: string;
@@ -43,12 +42,11 @@ export default function Publish() {
     }
   };
 
-  const { userName } = useUser();
 
   return (
     <>
       <div>
-        <Appbar name={userName} />
+        <Appbar />
       </div>
       <div className="flex flex-col items-center">
         <PublishComponent
