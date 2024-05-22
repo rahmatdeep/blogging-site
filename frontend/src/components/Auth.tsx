@@ -25,12 +25,13 @@ export default function Auth({ type }: { type: "signup" | "signin" }) {
       );
       const jwt = response.data.jwt;
       localStorage.setItem("token", `Bearer ${jwt}`);
-      const username = await axios.get(`${BACKEND_URl}/api/v1/user`, {
+      const user = await axios.get(`${BACKEND_URl}/api/v1/user`, {
         headers: {
           Authorization: localStorage.getItem("token"),
         },
       });
-      localStorage.setItem("username",username.data.name)
+      localStorage.setItem("username",user.data.name)
+      localStorage.setItem("userId",user.data.id)
       navigate("/posts");
     } catch (e: unknown) {
       if (axios.isAxiosError(e)) {

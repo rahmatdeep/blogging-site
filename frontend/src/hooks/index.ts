@@ -5,13 +5,28 @@ import axios from "axios";
 export interface Post {
   content: string;
   title: string;
-  id: number;
+  id: string;
   createdOn: string;
   author: {
     name: string;
     id: string;
     bio: string;
   };
+}
+
+export interface Comment {
+    id:string;
+    content:string;
+    published:boolean;
+    post:Post;
+    postId:number;
+    author:{
+        name:string;
+        id:string;
+        bio:string;
+    };
+    authorId:string;
+    createdAt: Date;
 }
 
 export function usePosts({ getPage }: { getPage: number }) {

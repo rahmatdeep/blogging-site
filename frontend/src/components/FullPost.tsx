@@ -5,6 +5,7 @@ import { Avatar } from "./PostCard";
 import { BACKEND_URl } from "../config";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useRef } from "react";
+import { CommentComponent } from "./Comment";
 
 export default function FullPost({
   post,
@@ -40,8 +41,8 @@ export default function FullPost({
       <div>
         <Appbar />
         <div className="flex justify-center">
-          <div className="lg:grid lg:grid-cols-12 lg:gap-0 px-10 w-full pt-200 max-w-screen overflow-clip lg:max-w-screen-2xl pt-12 flex flex-col gap-5">
-            <div className=" lg:col-span-9">
+          <div className="lg:grid lg:grid-cols-12 lg:auto-rows-auto lg:gap-0 px-10 w-full pt-200 max-w-screen overflow-clip lg:max-w-screen-2xl pt-12 flex flex-col gap-5">
+            <div className="lg:row-start-1 lg:row-end-2 lg:col-start-1 lg:col-end-9">
               <div className="flex lg:flex-row flex-col-reverse lg:justify-between lg:items-center">
                 <div className="text-5xl font-extrabold overflow-clip">
                   {post.title}
@@ -189,10 +190,12 @@ export default function FullPost({
                 </p>
               </div>
               <div className="text-slate-500 pt-2">{formattedDate}</div>
-              <div className="pt-4 anchorstyling" ref={contentRef}></div>
+              <div className="pt-4 anchorstyling mr-4" ref={contentRef}></div>
             </div>
-            <hr className="lg:hidden"></hr>
-            <div className=" lg:border-l-2 lg:pl-6 lg:col-span-3 pb-4 lg:pb-4">
+
+            
+
+            <div className="lg:row-start-1 lg:row-end-3 lg:col-start-9 lg:col-end-12 lg:order-3 lg:border-l-2 lg:pl-6 pb-4 lg:pb-4">
               <div className="text-slate-600 text-lg">Author</div>
 
               <div className="flex pt-1">
@@ -206,6 +209,9 @@ export default function FullPost({
                   <div className="pt-1 text-slate-500">{post.author.bio}</div>
                 </div>
               </div>
+            </div>
+            <div className="lg:row-start-2 lg:row-end-3 lg:col-start-1 lg:col-end-9 lg:order-2 lg:mr-4">
+              <CommentComponent postId={post.id} />
             </div>
           </div>
         </div>
