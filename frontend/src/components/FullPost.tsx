@@ -44,12 +44,12 @@ export default function FullPost({
           <div className="lg:grid lg:grid-cols-12 lg:auto-rows-auto lg:gap-0 px-10 w-full pt-200 max-w-screen overflow-clip lg:max-w-screen-2xl pt-12 flex flex-col gap-5">
             <div className="lg:row-start-1 lg:row-end-2 lg:col-start-1 lg:col-end-9">
               <div className="flex lg:flex-row flex-col-reverse lg:justify-between lg:items-center">
-                <div className="text-5xl font-extrabold overflow-clip">
+                <div className="text-5xl font-extrabold break-word">
                   {post.title}
                 </div>
                 <p className="lg:pl-6 lg:pr-6 ">
                   {isUser && (
-                    <div className="flex gap-1">
+                    <div className="flex gap-1 mb-3">
                       <button
                         type="button"
                         className="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-2.5 py-1.5  "
@@ -190,12 +190,12 @@ export default function FullPost({
                 </p>
               </div>
               <div className="text-slate-500 pt-2">{formattedDate}</div>
-              <div className="pt-4 anchorstyling mr-4" ref={contentRef}></div>
+              <div className="pt-4 anchorstyling mr-4 break-words" ref={contentRef}></div>
             </div>
 
             
 
-            <div className="lg:row-start-1 lg:row-end-3 lg:col-start-9 lg:col-end-12 lg:order-3 lg:border-l-2 lg:pl-6 pb-4 lg:pb-4">
+            <div className="lg:row-start-1 lg:row-end-3 lg:col-start-9 lg:col-end-12 lg:order-3 border-solid border-t-2 lg:border-l-2 lg:border-t-0 lg:pl-6 pb-4 lg:pb-4 pt-6 lg:pt-0 mt-6 lg:mt-0">
               <div className="text-slate-600 text-lg">Author</div>
 
               <div className="flex pt-1">
@@ -206,13 +206,17 @@ export default function FullPost({
                   <div className="text-2xl font-bold">
                     {post.author.name || "Anon"}
                   </div>
-                  <div className="pt-1 text-slate-500">{post.author.bio}</div>
+                  <div className="pt-1 text-slate-500 break-all">{post.author.bio}</div>
                 </div>
               </div>
             </div>
-            <div className="lg:row-start-2 lg:row-end-3 lg:col-start-1 lg:col-end-9 lg:order-2 lg:mr-4">
+
+
+            <div className="lg:row-start-2 lg:row-end-3 lg:col-start-1 lg:col-end-9 lg:order-2 lg:mr-4 break-all">
               <CommentComponent postId={post.id} />
             </div>
+
+
           </div>
         </div>
       </div>
