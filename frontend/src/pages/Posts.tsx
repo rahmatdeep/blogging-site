@@ -29,7 +29,7 @@ export default function Posts() {
     return (
       <div>
         <Appbar />
-        <div className="flex justify-center pt-4">
+        <div className="flex justify-center pt-4 flex-col items-center">
           <div>
             <Skeleton />
             <Skeleton />

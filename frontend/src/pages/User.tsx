@@ -56,8 +56,8 @@ export default function User() {
     return (
       <>
         <Appbar />
-        <div className="h-screen flex flex-col justify-center">
-          <div className="flex justify-center">
+        <div className="flex flex-col justify-center">
+          <div className="absolute top-1/2 left-1/2 flex justify-center">
             <Spinner />
           </div>
         </div>
